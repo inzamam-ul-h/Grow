@@ -1,6 +1,6 @@
 
 
-{{-- 
+{{--
 <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
         @csrf
@@ -67,7 +67,7 @@
             <div class="card-body">
 
                 <h3 class="text-center mt-0 m-b-15">
-                    <a href="index-2.html" class="logo logo-admin"><img src="{{ asset('frontend/assets/images/logo-dark.png') }}" height="30" alt="logo"></a>
+                    <a href="{{ route('home') }}" class="logo logo-admin"><img src="{{ asset('frontend/assets/images/Navy Brand Logo (1).png') }}" height="150" alt="logo"></a>
                 </h3>
 
                 <h4 class="text-muted text-center font-18"><b>Register</b></h4>
@@ -78,7 +78,7 @@
 
                         <div class="form-group row">
                             <div class="col-12">
-                                <input class="form-control" id="email" required="" placeholder="Email" type="email" name="email" :value="old('email')" required autocomplete="username">
+                                <input class="form-control" id="email" required="" placeholder="Email" type="email" name="email" :value="old('email')" required autofocus autocomplete="email">
                                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
                             </div>
                         </div>
@@ -86,9 +86,9 @@
 
                         <div class="form-group row">
                             <div class="col-12">
-                                <input class="form-control" id="name" type="text" required="" placeholder="Username" name="name" :value="old('name')" required autofocus autocomplete="name">
+                                <input class="form-control" id="name" type="text" required="" placeholder="Username" name="name" :value="old('name')" required  autocomplete="name">
                                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                            
+
                             </div>
                         </div>
 
@@ -106,7 +106,7 @@
 
 
 
-                     
+
 
                         <div class="form-group row">
                             <div class="col-12">
@@ -127,7 +127,7 @@
                         </div>
 
 
-                      
+
 
 
 

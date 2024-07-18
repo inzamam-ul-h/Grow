@@ -8,11 +8,23 @@
 <script src="{{ asset('frontend/assets/js/jquery.nicescroll.js') }}"></script>
 <script src="{{ asset('frontend/assets/js/jquery.scrollTo.min.js') }}"></script>
 
-<!--Morris Chart-->
-<script src="{{asset('frontend/assets/plugins/morris/morris.min.js')}} "></script>
-<script src="{{asset('frontend/assets/plugins/raphael/raphael-min.js')}}"></script>
+<script src="{{asset('frontend/assets/pages/dashborad.js')}}"></script>
+<script src="{{ asset('frontend/assets/js/select2.min.js') }}"></script>
+<script src="{{ asset('frontend/assets/js/all.min.js') }}"></script>
 
-<script src="{{ asset('frontend/assets/pages/dashborad.js')}}"></script>
+
+{{-- <script src="{{ asset('frontend/assets/pages/datatables.init.js') }}"></script> --}}
+
+
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
+
+
+
+
+
 
 <!-- App js -->
 <script src="{{asset('frontend/assets/js/app.js')}}"></script>

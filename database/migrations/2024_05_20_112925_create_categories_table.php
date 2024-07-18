@@ -17,14 +17,12 @@ return new class extends Migration
             $table->text('category_description')->nullable();
             $table->string('category_image')->nullable();
             $table->string('category_icon')->nullable();
-            $table->enum('category_status', ['active', 'inactive'])->default('active');
+            $table->enum('category_status', ['1', '0'])->default('1');
             $table->unsignedBigInteger('parent_category_id')->nullable();
-            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('parent_category_id')->references('id')->on('categories')->onDelete('cascade');//store sub category of courses 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('parent_category_id')->references('id')->on('categories')->onDelete('cascade');//store sub category of courses
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');
         });
     }

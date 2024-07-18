@@ -29,7 +29,7 @@
                 </div>
             @endif
 
-         
+
     </body> --}}
 
 
@@ -41,7 +41,7 @@
                     @php
                         $userType = Auth::user()->usertype;
                     @endphp
-    
+
                     @if ($userType == 'admin')
                         <!-- Admin Navigation Bar -->
                         <nav>
@@ -57,7 +57,7 @@
                     @elseif ($userType == 'organization')
                         <!-- Organization Navigation Bar -->
                         <nav>
-                            <a href="{{ url('/') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Organization Home</a>
+                            <a href="{{ route('home') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Organization Home</a>
                             <!-- Add more organization-specific links here -->
                         </nav>
                     @else
@@ -70,7 +70,7 @@
                 @else
                     <!-- Guest Navigation Bar -->
                     <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
-    
+
                     @if (Route::has('register'))
                         <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
                     @endif

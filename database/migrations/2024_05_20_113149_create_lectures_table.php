@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('lecture_name');
             $table->text('lecture_description')->nullable();
             $table->unsignedBigInteger('topic_id');
-           
+            // $table->string('lecture_file')->nullable();
             $table->string('lecture_video')->nullable();
-            $table->integer('lecture_duration')->nullable();
+
+            $table->string('lecture_status')->default('1');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('topic_id')->references('id')->on('topics')->onDelete('cascade');

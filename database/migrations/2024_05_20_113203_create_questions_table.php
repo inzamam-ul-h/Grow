@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('lecture_id');
-            $table->string('title'); 
-            $table->text('content')->nullable(); 
-            $table->boolean('is_active')->default(true);
-           $table->unsignedBigInteger('updated_by')->nullable();
+            $table->string('title');
+            $table->text('content')->nullable();
+            $table->string('status')->default('1');
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('lecture_id')->references('id')->on('lectures')->onDelete('cascade');

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('chapter_id');
             $table->string('topic_image')->nullable();
             $table->string('topic_icon')->nullable();
+            $table->string('topic_status')->default('1');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('chapter_id')->references('id')->on('chapters')->onDelete('cascade');

@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('employee_courses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('org_course_id');
-            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->unsignedBigInteger('course_id');
+
             $table->timestamps();
             $table->softDeletes();
             // Foreign key constraints
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('org_course_id')->references('id')->on('organization_courses')->onDelete('cascade');
-            $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+
             // Unique constraint to ensure an employee can take a course only once
-            $table->unique(['user_id', 'org_course_id']);
+            $table->unique(['user_id', 'course_id']);
         });
     }
 

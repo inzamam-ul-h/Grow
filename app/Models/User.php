@@ -24,7 +24,9 @@ class User extends Authenticatable
         'password',
         'usertype',
         'reference_id',
-        'updated_by'
+        'updated_by',
+        'deleted_at',
+        'status'
 
     ];
 
@@ -60,4 +62,24 @@ class User extends Authenticatable
     {
         return $this->hasOne(EmployeeProfile::class);
     }
+
+
+      // Relationship with organization courses
+      public function organizationCourses()
+      {
+          return $this->hasMany(Organization_courses::class, 'user_id');
+      }
+
+      // Relationship with courses updated by
+      public function updatedBy()
+      {
+          return $this->belongsTo(User::class, 'updated_by');
+      }
+
+
+      // Relationship with employee courses
+      public function employeeCourses()
+      {
+          return $this->hasMany(employee_courses::class, 'user_id');
+      }
 }

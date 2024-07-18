@@ -19,13 +19,14 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->integer('reference_id')->default(0);
             $table->string('password');
+            $table->string('status')->default('1');
             $table->unsignedBigInteger('updated_by')->nullable(); // Store the user_id of the user who last updated the category
             $table->softDeletes();
             $table->timestamps();
             $table->rememberToken();
 
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');
-           
+
         });
     }
 

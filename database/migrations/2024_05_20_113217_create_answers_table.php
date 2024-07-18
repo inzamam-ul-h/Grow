@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('question_id');
             $table->text('content'); // Add a field for the content of the answer
-            $table->boolean('is_correct')->default(false); 
+            $table->string('active')->default('0');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->softDeletes();
             $table->timestamps();

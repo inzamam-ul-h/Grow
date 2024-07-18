@@ -15,6 +15,7 @@ class EmployeeProfile extends Model
         'post',
         'qualification',
         'experence',
+        'deleted_at',
         'updated_by',
         'user_id',
     ];

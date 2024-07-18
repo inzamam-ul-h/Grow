@@ -34,6 +34,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+
         ]);
 
         $user = User::create([
@@ -42,10 +43,11 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'usertype' => 'organization', // Static usertype
             'reference_id' => 0, // Static reference ID
+            'status'=>'0',
         ]);
 
 
-       
+
 
 
         event(new Registered($user));

@@ -18,11 +18,11 @@ return new class extends Migration
             $table->unsignedBigInteger('course_id');
             $table->string('chapter_image')->nullable();
             $table->string('chapter_icon')->nullable();
-            $table->enum('chapter_status', ['active', 'inactive'])->default('active');
-            
+            $table->enum('chapter_status', ['1', '0'])->default('1');
+
             $table->timestamps();
             $table->softDeletes();
-           
+
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
         });
     }
