@@ -196,6 +196,11 @@ Route::middleware(['auth', 'admin_or_organization',])->prefix('orgCourses')->gro
     Route::get('/{id}', [OrgCoursesController::class, 'index'])->name('orgCourse.index');
     Route::post('/assign/{id}', [OrgCoursesController::class, 'store'])->name('orgCourse.store');
     Route::get('/{id}/assign/{orgCid}', [OrgCoursesController::class, 'show'])->name('orgCourse.show');
+    Route::get('/toggle-status/{id}', [OrgCoursesController::class, 'toggleStatus'])
+    ->name('orgCourse.toggleStatus')
+    ->middleware('admin');
+
+
 
 });
 

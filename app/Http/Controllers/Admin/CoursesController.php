@@ -16,7 +16,7 @@ class CoursesController extends Controller
 
     public function toggleStatus($id)
     {
-        $courses =Course::findOrFail($id);
+        $courses = Course::findOrFail($id);
         $courses->status = $courses->status == '0' ? '1' : '0';
         $courses->save();
 
@@ -113,39 +113,37 @@ class CoursesController extends Controller
 
 
 
-      $organizations = DB::table('users')
-    ->join('organization_courses', 'users.id', '=', 'organization_courses.user_id')
-    ->join('courses', 'organization_courses.course_id', '=', 'courses.id')
-    ->select('users.id', 'users.name', 'users.email','users.usertype')
-    ->where('courses.id', $id)
-    ->where('users.usertype', 'organization')
-    ->get();
+        $organizations = DB::table('users')
+            ->join('organization_courses', 'users.id', '=', 'organization_courses.user_id')
+            ->join('courses', 'organization_courses.course_id', '=', 'courses.id')
+            ->select('users.id', 'users.name', 'users.email', 'users.usertype','organization_courses.id as orgCid',
+            'organization_courses.status as orgStatus')
+            ->where('courses.id', $id)
+            ->where('users.usertype', 'organization')
+            ->get();
 
 
-    $employees = DB::table('users AS e')
-    ->join('employee_courses AS ec', 'e.id', '=', 'ec.user_id')
-    ->join('courses AS c', 'ec.course_id', '=', 'c.id')
-    ->join('users AS o', 'e.reference_id', '=', 'o.id') // Join to get organization details
-    ->select('e.id', 'e.name', 'e.email', 'o.name AS organization_name') // Select organization name
-    ->where('c.id', $id)
-    ->where('e.usertype', 'employee')
-    ->get();
+        $employees = DB::table('users AS e')
+            ->join('employee_courses AS ec', 'e.id', '=', 'ec.user_id')
+            ->join('courses AS c', 'ec.course_id', '=', 'c.id')
+            ->join('users AS o', 'e.reference_id', '=', 'o.id') // Join to get organization details
+            ->select('e.id', 'e.name', 'e.email', 'o.name AS organization_name') // Select organization name
+            ->where('c.id', $id)
+            ->where('e.usertype', 'employee')
+            ->get();
 
 
         $category = DB::table('courses as cr')
-        ->leftJoin('categories as ct', 'cr.category_id', '=', 'ct.id')
-        ->leftJoin('categories as ch', 'cr.subCategory_id', '=', 'ch.id')
-        ->select('ct.category_name as category_name', 'ch.category_name as subCategoryName', 'ct.category_icon as category_icon')
-        ->where('cr.id', $id)
-        ->first();
-        if($course==NULL){
+            ->leftJoin('categories as ct', 'cr.category_id', '=', 'ct.id')
+            ->leftJoin('categories as ch', 'cr.subCategory_id', '=', 'ch.id')
+            ->select('ct.category_name as category_name', 'ch.category_name as subCategoryName', 'ct.category_icon as category_icon')
+            ->where('cr.id', $id)
+            ->first();
+        if ($course == NULL) {
             return redirect()->back()->with("error", "Course Not Found");
+        } else {
+            return view('admin.courses.show', compact('course', 'category', 'organizations', 'employees'));
         }
-        else {
-            return view('admin.courses.show', compact('course','category','organizations','employees'));
-        }
-
-
     }
 
     /**
@@ -155,13 +153,11 @@ class CoursesController extends Controller
     {
 
         $course = Course::findOrFail($id);
-        $categories=Category::all();
-        if(!$course){
-            return redirect()->back('with',"Course not found");
-        }
-
-        else{
-            return view('admin.courses.edit', compact('course','categories'));
+        $categories = Category::all();
+        if (!$course) {
+            return redirect()->back('with', "Course not found");
+        } else {
+            return view('admin.courses.edit', compact('course', 'categories'));
         }
     }
 
@@ -170,7 +166,7 @@ class CoursesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $course= Course::find($id);
+        $course = Course::find($id);
         $request->validate([
             'course_name' => 'required', 'string', 'max:255', 'unique:courses,course_name',
             'course_description' => 'required', 'string', 'max:255',
@@ -219,36 +215,32 @@ class CoursesController extends Controller
     }
 
 
-        public function toggleUserStatus(Request $request)
-        {
-            $userId = $request->input('user_id');
-            $courseId = $request->input('course_id');
-            $action = $request->input('action');
+    public function toggleUserStatus(Request $request)
+    {
+        $userId = $request->input('user_id');
+        $courseId = $request->input('course_id');
+        $action = $request->input('action');
 
-            // Determine if the user is an organization or employee
-            $user = User::find($userId);
-            $course = Course::find($courseId);
+        // Determine if the user is an organization or employee
+        $user = User::find($userId);
+        $course = Course::find($courseId);
 
-            if ($user && $course) {
-                if ($user->usertype == 'organization') {
-                    $relation = $course->organizations()->where('organization_id', $userId)->first();
-                    if ($relation) {
-                        $course->organizations()->updateExistingPivot($userId, ['status' => $action]);
-                    }
-                } elseif ($user->usertype == 'employee') {
-                    $relation = $course->employees()->where('employee_id', $userId)->first();
-                    if ($relation) {
-                        $course->employees()->updateExistingPivot($userId, ['status' => $action]);
-                    }
+        if ($user && $course) {
+            if ($user->usertype == 'organization') {
+                $relation = $course->organizations()->where('organization_id', $userId)->first();
+                if ($relation) {
+                    $course->organizations()->updateExistingPivot($userId, ['status' => $action]);
                 }
-
-                return response()->json(['success' => true]);
+            } elseif ($user->usertype == 'employee') {
+                $relation = $course->employees()->where('employee_id', $userId)->first();
+                if ($relation) {
+                    $course->employees()->updateExistingPivot($userId, ['status' => $action]);
+                }
             }
 
-            return response()->json(['success' => false, 'message' => 'User or Course not found.']);
+            return response()->json(['success' => true]);
+        }
 
+        return response()->json(['success' => false, 'message' => 'User or Course not found.']);
     }
-
-
-
 }

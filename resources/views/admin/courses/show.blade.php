@@ -253,16 +253,24 @@
                                                             <td>{{ $organization->name }}</td>
                                                             <td>{{ $organization->email }}</td>
                                                             <td>
-                                                                {{-- @if ($organization->pivot)
-                                <span class="status-badge badge {{ $organization->pivot->status == 'active' ? 'badge-success' : 'badge-secondary' }}">
-                                    {{ $organization->pivot->status == 'active' ? 'Active' : 'Inactive' }}
-                                </span>
-                                <button class="btn btn-sm toggle-status {{ $organization->pivot->status == 'active' ? 'btn-danger' : 'btn-success' }}" data-user-id="{{ $organization->id }}" data-course-id="{{ $course->id }}" data-action="{{ $organization->pivot->status == 'active' ? 'deactivate' : 'activate' }}">
-                                    {{ $organization->pivot->status == 'active' ? 'Deactivate' : 'Activate' }}
-                                </button>
-                            @else
-                                <span class="badge badge-warning">No status</span>
-                            @endif --}}
+                                                                @if (auth()->user()->usertype == 'admin')
+                                                                <div class="btn-group">
+                                                                    <button
+                                                                        class="btn toggle-status {{ $organization->orgStatus == '0' ? 'btn-danger' : 'btn-secondary btn-sm' }}"
+                                                                        data-id="{{ $organization->orgCid }}">
+                                                                        @if ($organization->orgStatus == '0')
+                                                                            <i class="fas fa-toggle-off"></i> Inactive
+                                                                        @else
+                                                                            <i class="fas fa-toggle-on"></i> Active
+                                                                        @endif
+                                                                    </button>
+                                                                </div>
+
+
+                                                            @endif
+
+
+
                                                             </td>
 
                                                         </tr>
@@ -290,18 +298,7 @@
                                                         <tr>
                                                             <td>{{ $employee->name }}</td>
                                                             <td>{{ $employee->email }}</td>
-                                                            <td>
-                                                                {{-- @if ($employee->pivot)
-                                <span class="status-badge badge {{ $employee->pivot->status == 'active' ? 'badge-success' : 'badge-secondary' }}">
-                                    {{ $employee->pivot->status == 'active' ? 'Active' : 'Inactive' }}
-                                </span>
-                                <button class="btn btn-sm toggle-status {{ $employee->pivot->status == 'active' ? 'btn-danger' : 'btn-success' }}" data-user-id="{{ $employee->id }}" data-course-id="{{ $course->id }}" data-action="{{ $employee->pivot->status == 'active' ? 'deactivate' : 'activate' }}">
-                                    {{ $employee->pivot->status == 'active' ? 'Deactivate' : 'Activate' }}
-                                </button>
-                            @else
-                                <span class="badge badge-warning">No status</span>
-                            @endif --}}
-                                                            </td>
+
                                                             <td>{{ $employee->organization_name }}</td>
                                                         </tr>
                                                     @endforeach
@@ -442,3 +439,37 @@
 
     //handle user and courser status active
 </script>
+
+
+{{-- //Organization course status if we want to block organization to acess course --}}
+<script>
+    $(document).ready(function() {
+        // Function to toggle course status
+        function toggleStatus(orgCid, button) {
+            $.ajax({
+                url: '{{ route("orgCourse.toggleStatus", ":id") }}'.replace(':id', orgCid),
+                method: 'GET',
+                success: function(data) {
+                    if (data.status == '0') {
+                        button.html('<i class="fas fa-toggle-off"></i> Inactive');
+                        button.removeClass('btn-secondary btn-sm').addClass('btn-danger');
+                    } else {
+                        button.html('<i class="fas fa-toggle-on"></i> Active');
+                        button.removeClass('btn-danger').addClass('btn-secondary btn-sm');
+                    }
+                },
+                error: function(error) {
+                    console.log('Error:', error);
+                }
+            });
+        }
+
+        // Handle click event on status button
+        $(document).on('click', '.toggle-status', function() {
+            var orgCid = $(this).data('id');
+            var button = $(this);
+            toggleStatus(orgCid, button);
+        });
+    });
+</script>
+

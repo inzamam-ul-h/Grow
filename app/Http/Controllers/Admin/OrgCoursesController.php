@@ -60,7 +60,7 @@ class OrgCoursesController extends Controller
                     ->leftJoin('users as u', 'oc.user_id', '=', 'u.id')
                     ->leftJoin('categories as ct', 'c.category_id', '=', 'ct.id')
                     ->leftJoin('categories as ch', 'c.subCategory_id', '=', 'ch.id')
-                    ->where('oc.user_id', $id)
+                    ->where('oc.user_id', $id)->where('oc.status','=','1')
                     ->select(
                         'oc.*',
                         'oc.status as orgCourseStatus',
@@ -95,6 +95,14 @@ class OrgCoursesController extends Controller
     }
 
 
+    public function toggleStatus($id)
+    {
+        $orgCourse = Organization_courses::findOrFail($id);
+        $orgCourse->status = $orgCourse->status == '0' ? '1' : '0';
+        $orgCourse->save();
+
+        return response()->json(['status' => $orgCourse->status, 'success' => 'Organization status updated successfully.']);
+    }
 
 
     /**
