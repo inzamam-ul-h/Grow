@@ -1,6 +1,7 @@
 @include('frontend.layouts.header_links')
 @include('frontend.layouts.header')
 
+
 <div class="wrapper">
     <div class="container-fluid">
 
@@ -10,7 +11,7 @@
                <a href="{{ route('user.create') }}"> <button class="btn btn-success">Add Employee</button></a>
             </div>
             <div class="col-md-6 text-right">
-                <button onclick="assignCourse()" class="btn btn-primary">Assign Course</button>
+               <a href="{{ route('empCourse.index',['id'=>$userid]) }}"> <button class="btn btn-primary">Assign Course</button></a>
             </div>
         </div>
 

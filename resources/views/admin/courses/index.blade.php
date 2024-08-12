@@ -96,9 +96,9 @@
                             @endif
                         </div>
                         <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-                            <button class="btn btn-danger btn-sm" style="flex: 1; margin-right: 5px;">
+                            {{-- <button class="btn btn-danger btn-sm" style="flex: 1; margin-right: 5px;">
                                 <i class="fas fa-trash-alt"></i> Delete
-                            </button>
+                            </button> --}}
                             <a class="btn btn-primary btn-sm" style="flex: 1; margin-right: 5px;" href="{{ route('course.edit', ['id' => $course->id]) }}">
                                 <i class="fas fa-edit"></i> Edit
                             </a>

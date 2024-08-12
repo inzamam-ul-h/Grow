@@ -48,7 +48,7 @@
         @endif
 
         @if(auth()->user()->usertype=='admin'|| auth()->user()->usertype=='organization')
-            <form action="{{ route('empCourse.store',['id'=>$user_id]) }}" method="POST" class="form-inline">
+            {{-- <form action="{{ route('empCourse.store',['id'=>$user_id]) }}" method="POST" class="form-inline">
                 @csrf
                 <div class="form-group mr-4">
                     <label for="course_id" class="mr-4">Course:</label>
@@ -62,11 +62,84 @@
 
 
                 <button type="submit" class="btn btn-primary btn-sm">Assign Course</button>
-            </form>
+            </form> --}}
+
+
+            <div class="col-lg-13">
+                <div class="card m-b-30">
+                     <!-- Accordion for All Courses -->
+    <div class="card m-b-30">
+        <div class="card-body">
+            <h4 class="mt-0 header-title">Courses by Category</h4>
+            <p class="text-muted m-b-30 font-14">Browse courses grouped by category.</p>
+
+            <div id="accordion" role="tablist" aria-multiselectable="true">
+                @foreach ($totalCourses->groupBy('category_name') as $categoryName => $courses)
+                    <div class="card">
+                        <div class="card-header" role="tab" id="heading{{ $loop->index }}">
+                            <h5 class="mb-0 mt-0 font-16">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapse{{ $loop->index }}" aria-expanded="false"
+                                   aria-controls="collapse{{ $loop->index }}" class="text-dark">
+                                   {{ $loop->index+1 }}:
+                                    {{ $categoryName }}
+                                </a>
+                            </h5>
+                        </div>
+
+                        <div id="collapse{{ $loop->index }}" class="collapse" role="tabpanel"
+                             aria-labelledby="heading{{ $loop->index }}">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0 dataTable" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center; white-space: nowrap;"><strong>Sr No</strong></th>
+                                                <th style="text-align: center; white-space: nowrap;"><strong>Course Name</strong></th>
+                                                <th style="text-align: center; white-space: nowrap;"><strong>Description</strong></th>
+                                                <th style="text-align: center; white-space: nowrap;"><strong>Price</strong></th>
+                                                <th style="text-align: center; white-space: nowrap;"><strong>Action</strong></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($courses as $course)
+                                                <tr>
+                                                    <td style="text-align: center;">{{ $loop->index+1 }}</td>
+                                                    <td style="text-align: center;">{{ $course->course_name }}</td>
+                                                    <td style="text-align: center;">{{ $course->course_description }}</td>
+                                                    <td style="text-align: center;">${{ $course->price }}</td>
+                                                    <td style="text-align: center;">
+                                                        <form action="{{ route('empCourse.store',['id'=>$user_id]) }}" method="POST" class="assign-form">
+                                                            @csrf
+                                                            <input type="hidden" name="course_id" value="{{ $course->course_id }}">
+                                                            {{-- <input type="hidden" name="user_id" value="{{ $user_id }}"> --}}
+                                                            <button type="submit" class="btn btn-primary btn-sm">Assign</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+                    </div>
+                </div>
+            </div>
+
            @endif
+</div>
+
+
         <div class="container mt-5">
+            <h4>Assign Courses </h4>
             <div class="row">
-                @foreach ($courses as $course)
+
+                @foreach ($orgCourses as $course)
                     <div class="col-md-4 mb-4  course-item">
 
 
@@ -116,9 +189,7 @@
                                         <div>
                                             <span><strong>Category Name:</strong>{{ $course->category_name }}</span>
                                             <br>
-                                            {{-- @if ($course->subCategory)
-                                <small><strong>Sub Category Name:</strong>{{ $course->subcategory->category_name }}</small>
-                                @endif --}}
+
                                         </div>
                                     @endif
                                 </div>
@@ -160,9 +231,7 @@
             </div>
         </div>
 
-        <div class="d-flex justify-content-center mt-4" style="font-family: Arial, sans-serif;">
-            {{ $courses->links('vendor.pagination.bootstrap-4') }}
-        </div>
+
 
     </div> <!-- end container -->
 </div>
@@ -224,8 +293,31 @@
 
 
 
+
 <script>
     $(document).ready(function() {
-        $('#course_id').select2();
+        // Initialize DataTable for all tables with class 'dataTable'
+        function initializeDataTables() {
+            $('.dataTable').each(function() {
+                if ($.fn.DataTable.isDataTable(this)) {
+                    $(this).DataTable().destroy();
+                }
+                $(this).DataTable({
+                    processing: true,
+                    serverSide: false, // Change to true if you're using server-side processing
+                    paging: true,
+                    searching: true,
+                    ordering: true
+                });
+            });
+        }
+
+        // Initialize DataTable when the page loads
+        initializeDataTables();
+
+        // Reinitialize DataTable when collapsing an accordion
+        $('#accordion').on('shown.bs.collapse', function () {
+            initializeDataTables();
+        });
     });
 </script>

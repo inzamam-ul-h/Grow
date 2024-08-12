@@ -1,4 +1,4 @@
-@include('frontend.layouts.header_links')
+{{-- @include('frontend.layouts.header_links')
 @include('frontend.layouts.header')
 
 <div class="wrapper">
@@ -113,4 +113,4 @@
         // Optionally, you can hide the "See More" link after it's clicked
         // document.getElementById('see-more-link-' + categoryId).style.display = 'none';
     }
-</script>
+</script> --}}

@@ -177,41 +177,5 @@ class CategoryController extends Controller
             ->with('success', 'Category updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function trash()
-    {
-        $categories = Category::onlyTrashed()->get();
-
-            return view('admin.categories.trash', compact('categories'));
-    }
-
-
-    public function moveToTrash(string $id){
-        $category = Category::findOrFail($id);
-        if($category==NULL){
-            return redirect()->back()->with('success', 'Category Not Found');
-        }
-        else
-        $category->delete();
-
-        return redirect()->route('category.index')->with('success', 'Category moved to trashed');
-
-    }
-
-    public function restore(string $id)
-    {
-
-
-    }
-
-    public function forceDelete(string $id)
-    {
-
-    }
-
-
-
 
 }

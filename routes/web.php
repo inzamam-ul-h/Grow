@@ -9,15 +9,19 @@ use App\Http\Controllers\Admin\LectureController;
 use App\Http\Controllers\admin\OrganizationCrudController;
 use App\Http\Controllers\Admin\OrgCoursesController;
 use App\Http\Controllers\Admin\TopicsController;
+use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\AssignmentSubmissionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Organization\EmployeeCrudController;
 use App\Http\Controllers\Organization\OrganizationProfileController;
 use App\Http\Controllers\OrganizationCrudController as ControllersOrganizationCrudController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Prompts\Progress;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,10 +113,10 @@ Route::middleware(['auth', 'admin',])->prefix('organization')->group(function ()
 
 Route::middleware(['auth', 'admin',])->prefix('category')->group(function () {
 
-    Route::get('/trash', [CategoryController::class, 'trash'])->name('category.trash');
-    Route::post('/{id}/restore', [CategoryController::class, 'restore'])->name('category.restore');
-    Route::delete('/{id}/force-delete', [CategoryController::class, 'forceDelete'])->name('category.forceDelete');
-    Route::get('/trash/{id}', [CategoryController::class, 'moveToTrash'])->name('category.moveToTrash');
+    // Route::get('/trash', [CategoryController::class, 'trash'])->name('category.trash');
+    // Route::post('/{id}/restore', [CategoryController::class, 'restore'])->name('category.restore');
+    // Route::delete('/{id}/force-delete', [CategoryController::class, 'forceDelete'])->name('category.forceDelete');
+    // Route::get('/trash/{id}', [CategoryController::class, 'moveToTrash'])->name('category.moveToTrash');
 
 
     Route::get('/', [CategoryController::class, 'index'])->name('category.index');
@@ -140,6 +144,8 @@ Route::middleware(['auth'])->prefix('course')->group(function () {
     Route::get('/{id}', [CoursesController::class, 'show'])->middleware('admin_or_organization')->name('course.show');
     Route::get('/edit/{id}', [CoursesController::class, 'edit'])->name('course.edit')->middleware('admin');
     Route::put('/update/{id}', [CoursesController::class, 'update'])->name('course.update')->middleware('admin');
+   //fetch sub categories of for course
+    Route::get('/fetchSubcategories/{id}', [CoursesController::class, 'fetchSubcategories'])->name('course.fetchSubcategories')->middleware('admin');
 
     //status
     Route::get('/toggle-status/{id}', [CoursesController::class, 'toggleStatus'])->name('course.toggleStatus')->middleware('admin');
@@ -148,13 +154,14 @@ Route::middleware(['auth'])->prefix('course')->group(function () {
 
 
 Route::middleware(['auth'])->prefix('chapter')->group(function () {
-    Route::put('/update/{id}/course/{cid}', [ChaptersController::class, 'update'])->name('chapter.update')->middleware('admin');
+
 
     Route::get('/course/{id}', [ChaptersController::class, 'index'])->name('chapter.index')->middleware('admin');
     Route::get('/create/{id}', [ChaptersController::class, 'create'])->name('chapter.create')->middleware('admin');
     Route::post('/create/{id}', [ChaptersController::class, 'store'])->name('chapter.store')->middleware('admin');
     Route::get('/{id}/course/{cid}', [ChaptersController::class, 'show'])->name('chapter.show')->middleware('admin_or_organization');
     Route::get('/edit/{id}/course/{cid}', [ChaptersController::class, 'edit'])->name('chapter.edit')->middleware('admin');
+    Route::put('/update/{id}/course/{cid}', [ChaptersController::class, 'update'])->name('chapter.update')->middleware('admin');
     //status
     Route::get('/toggle-status/{id}', [ChaptersController::class, 'toggleStatus'])->name('chapter.toggleStatus')->middleware('admin');
 });
@@ -212,3 +219,30 @@ Route::middleware(['auth'])->prefix('empCourses')->group(function () {
     Route::get('/{id}/assign/{orgCid}', [empCourseController::class, 'show'])->name('empCourse.show');
 
 });
+
+
+route::get('chat/user',function(){
+    return view('chat.chat');
+});
+
+
+
+Route::middleware(['auth', 'admin_or_organization',])->prefix('assignment')->group(function () {
+    Route::get('/create/topic/{topic_id}', [AssignmentController::class, 'create'])->name('assignment.create')->middleware('admin');
+    Route::post('/create/topic/{topic_id}', [AssignmentController::class, 'store'])->name('assignment.store')->middleware('admin');
+    Route::get('/{assignment_id}/topic/{topic_id}', [AssignmentController::class, 'show'])->name('assignment.show');
+    Route::get('/edit/{assignment_id}/topic/{topic_id}', [AssignmentController::class, 'edit'])->name('assignment.edit')->middleware('admin');
+    Route::put('/update/{assignment_id}/topic/{topic_id}', [AssignmentController::class, 'update'])->name('assignment.update')->middleware('admin');
+    // //status
+    // Route::get('/toggle-status/{id}', [AssignmentController::class, 'toggleStatus'])->name('assignment.toggleStatus')->middleware('admin');
+
+
+});
+Route::post('/submit/{assignment_id}', [AssignmentController::class, 'assignmentSubmission'])->name('assignment.submit')->middleware('check_employee_assignment');
+
+
+route::get('viewSubmission/{assignment_id}',[AssignmentController::class,'getSubmittedAssignment'])->name('assignment.view');
+
+
+// progress check view or not
+Route::post('/update-lecture-progress', [ProgressController::class, 'updateProgress'])->name('update.lecture.progress');

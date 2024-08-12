@@ -27,7 +27,7 @@ class empCourseController extends Controller
 
     if (auth()->user()->usertype == 'admin' ) {
         // Fetch assigned courses for the employee
-        $courses = DB::table('employee_courses as oc')
+        $orgCourses = DB::table('employee_courses as oc')
             ->leftJoin('courses as c', 'oc.course_id', '=', 'c.id')
             ->leftJoin('categories as ct', 'c.category_id', '=', 'ct.id')
             ->leftJoin('categories as ch', 'c.subCategory_id', '=', 'ch.id')
@@ -47,21 +47,15 @@ class empCourseController extends Controller
                 'ch.category_name as subcategory_name',
                 'ch.category_icon as subcategory_icon'
             )
-            ->paginate(6);
+            ->get();
 
         // Fetch all courses for admin to assign to the employee
-        $totalCourses = DB::table('courses')->pluck('course_name', 'id');
-    } else if (auth()->user()->usertype == 'employee') {
-        // Ensure the employee user can only access their own courses
-        if ($id == auth()->user()->id) {
-            $courses = DB::table('employee_courses as oc')
-                ->leftJoin('courses as c', 'oc.course_id', '=', 'c.id')
-                ->leftJoin('users as u', 'oc.user_id', '=', 'u.id')
+        // $totalCourses = DB::table('courses')->pluck('course_name', 'id');
+
+        $totalCourses =   DB::table('courses as c')
                 ->leftJoin('categories as ct', 'c.category_id', '=', 'ct.id')
                 ->leftJoin('categories as ch', 'c.subCategory_id', '=', 'ch.id')
-                ->where('oc.user_id', $id)
                 ->select(
-                    'oc.*',
                     'c.id as course_id',
                     'c.course_name',
                     'c.course_description',
@@ -74,27 +68,17 @@ class empCourseController extends Controller
                     'ct.category_icon as category_icon',
                     'ch.category_name as subcategory_name',
                     'ch.category_icon as subcategory_icon'
-                )
-                ->paginate(6);
-
-            // Fetch specific courses for the employee user
-            $totalCourses = DB::table('courses as c')
-                ->leftJoin('employee_courses as oc', 'c.id', '=', 'oc.course_id')
-                ->where('oc.user_id', $id)
-                ->pluck('c.course_name', 'c.id');
-        }
-
-        else {
-            return redirect()->back()->with('error', 'Unauthorized access');
-        }
+                )->get();
     }
 
-    if (auth()->user()->usertype == 'organization') {
+
+
+    elseif (auth()->user()->usertype == 'organization') {
         // Get the organization ID of the authenticated user
         $organizationId = auth()->user()->id;
 
         // Fetch assigned courses for the employees of the organization
-        $courses = DB::table('employee_courses as oc')
+        $orgCourses = DB::table('employee_courses as oc')
             ->leftJoin('courses as c', 'oc.course_id', '=', 'c.id')
             ->leftJoin('categories as ct', 'c.category_id', '=', 'ct.id')
             ->leftJoin('categories as ch', 'c.subCategory_id', '=', 'ch.id')
@@ -115,30 +99,77 @@ class empCourseController extends Controller
                 'ct.category_icon as category_icon',
                 'ch.category_name as subcategory_name',
                 'ch.category_icon as subcategory_icon'
-            )
-            ->paginate(6);
+            )->get();
 
         // Fetch only courses assigned to the organization
     $totalCourses = DB::table('organization_courses as oc')
     ->leftJoin('courses as c', 'oc.course_id', '=', 'c.id')
+    ->leftJoin('categories as ct', 'c.category_id', '=', 'ct.id')
+    ->leftJoin('categories as ch', 'c.subCategory_id', '=', 'ch.id')
     ->where('oc.user_id', $organizationId)
-    ->pluck('c.course_name', 'c.id');
+    ->select(
+        'oc.*',
+        'c.id as course_id',
+        'c.course_name',
+        'c.course_description',
+        'c.intro_video',
+        'c.course_icon',
+        'c.course_image',
+        'c.price',
+        'c.status',
+        'ct.category_name as category_name',
+        'ct.category_icon as category_icon',
+        'ch.category_name as subcategory_name',
+        'ch.category_icon as subcategory_icon'
+    )->get();
+
     }
 
 
-    // else {
-    //     return redirect()->back()->with('error', 'Unauthorized access');
-    // }
-    return view('admin.emp_courses.index', compact('courses', 'username', 'user_id', 'totalCourses'));
+
+    else if (auth()->user()->usertype == 'employee') {
+        // Ensure the employee user can only access their own courses
+        if ($id == auth()->user()->id) {
+            $orgCourses = DB::table('employee_courses as oc')
+                ->leftJoin('courses as c', 'oc.course_id', '=', 'c.id')
+                ->leftJoin('users as u', 'oc.user_id', '=', 'u.id')
+                ->leftJoin('categories as ct', 'c.category_id', '=', 'ct.id')
+                ->leftJoin('categories as ch', 'c.subCategory_id', '=', 'ch.id')
+                ->where('oc.user_id', $id)
+                ->select(
+                    'oc.*',
+                    'c.id as course_id',
+                    'c.course_name',
+                    'c.course_description',
+                    'c.intro_video',
+                    'c.course_icon',
+                    'c.course_image',
+                    'c.price',
+                    'c.status',
+                    'ct.category_name as category_name',
+                    'ct.category_icon as category_icon',
+                    'ch.category_name as subcategory_name',
+                    'ch.category_icon as subcategory_icon'
+                )->get();
+
+            // Fetch specific courses for the employee user
+            $totalCourses = DB::table('courses as c')
+                ->leftJoin('employee_courses as oc', 'c.id', '=', 'oc.course_id')
+                ->where('oc.user_id', $id)
+                ->pluck('c.course_name', 'c.id');
+        }
+
+        else {
+            return redirect()->back()->with('error', 'Unauthorized access');
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+
+
+    return view('admin.emp_courses.index', compact('orgCourses', 'username', 'user_id', 'totalCourses'));
     }
+
+
 
     /**
      * Store a newly created resource in storage.

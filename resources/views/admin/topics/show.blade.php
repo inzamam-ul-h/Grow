@@ -71,17 +71,26 @@
                             </div>
                         </div>
                         @if(auth()->user()->usertype=='admin')
-                        <button class="btn toggle-status {{ $topic->topic_status == '0' ? 'btn-danger btn-sm' : 'btn-secondary btn-sm' }}" data-id="{{ $topic->id }}">
+                        {{-- <button class="btn toggle-status {{ $topic->topic_status == '0' ? 'btn-danger btn-sm' : 'btn-secondary btn-sm' }}" data-id="{{ $topic->id }}">
                             @if ($topic->topic_status == '0')
                                 <i class="fas fa-toggle-off"></i> Inactive
                             @else
                                 <i class="fas fa-toggle-on"></i> Active
                             @endif
-                        </button>
+                        </button> --}}
 
-                        <a href="{{ route('lecture.create',['id'=>$topic->id]) }}" class="btn btn-primary btn-sm ml-3" style="background-color: #05284e; border-color: #0a1b2e; color: #fff;">
+                      <a href="{{ route('assignment.create', ['topic_id' => $topic->id]) }}">  <button class="btn btn-success btn-sm ml-3" style="background-color: #4caf50; border-color: #388e3c; color: #fff;">
+                            <i class="fas fa-plus-circle"></i> Add Assignment
+                        </button></a>
+
+                        <a href="{{ route('lecture.create', ['id' => $topic->id]) }}" class="btn btn-primary btn-sm ml-3" style="background-color: #1976d2; border-color: #0d47a1; color: #fff;">
                             <i class="fas fa-plus-circle"></i> Add Lecture
                         </a>
+
+                        <a href="#" class="btn btn-warning btn-sm ml-3" style="background-color: #ffa000; border-color: #ff6f00; color: #fff;">
+                            <i class="fas fa-plus-circle"></i> Add Quiz
+                        </a>
+
                         @endif
                     </div>
 

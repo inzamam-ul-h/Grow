@@ -61,7 +61,7 @@
                         </div>
 
                         <div class="card-body">
-                            <form action="{{ route('chapter.store', ['id' => $chapter->id, 'cid' => $course->id]) }}" method="POST" enctype="multipart/form-data" id="chapterForm">
+                            <form action="{{ route('chapter.store', [ 'id' => $course->id]) }}" method="POST" enctype="multipart/form-data" id="chapterForm">
                                 @csrf
 
                                 <!-- Chapter Name Row -->

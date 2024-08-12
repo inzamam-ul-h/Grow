@@ -41,7 +41,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
@@ -65,11 +65,11 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'organization'=> \App\Http\Middleware\OrganizationMiddleware::class,
+        'organization' => \App\Http\Middleware\OrganizationMiddleware::class,
         'profile.complete' => \App\Http\Middleware\CheckProfileCompletion::class,
-        'admin'=>\App\Http\Middleware\AdminMiddleware::class,
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'check.status' => \App\Http\Middleware\CheckUserStatus::class,
         'admin_or_organization' => \App\Http\Middleware\AdminOrOrganizationMiddleware::class,
-
+        'check_employee_assignment' => \App\Http\Middleware\CheckEmployeeAssignmentSubmission::class,
     ];
 }

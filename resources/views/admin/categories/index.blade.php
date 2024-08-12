@@ -12,9 +12,9 @@
             <div class="col-md-6">
                 <a href="{{ route('category.create') }}"> <button class="btn btn-success">Add Category</button></a>
             </div>
-            <div class="col-md-6 text-right">
+            {{-- <div class="col-md-6 text-right">
                 <a href="{{ route('category.trash') }}"><button class="btn btn-danger">View Trash</button></a>
-            </div>
+            </div> --}}
         </div>
         <!-- Page-Title -->
         <div class="row">
@@ -95,11 +95,11 @@
                                             <i class="fas fa-edit"></i> Edit
                                         </button>
                                     </a>
-                                    <a href="{{ route('category.moveToTrash', ['id' => $category->id]) }}" style="flex: 1; margin-left: 5px;">
+                                    {{-- <a href="{{ route('category.moveToTrash', ['id' => $category->id]) }}" style="flex: 1; margin-left: 5px;">
                                         <button class="btn btn-danger btn-sm btn-block">
                                             <i class="fas fa-trash-alt"></i> Delete
                                         </button>
-                                    </a>
+                                    </a> --}}
                                     <button class="btn toggle-status {{ $category->category_status == '0' ? 'btn-danger' : 'btn-success' }} btn-sm btn-block"
                                             data-id="{{ $category->id }}" style="flex: 1; margin-left: 5px;">
                                         @if ($category->category_status == '0')

@@ -13,9 +13,7 @@
             <div class="col-md-6">
                 <a href="{{ route('category.index') }}"> <button class="btn btn-success">View Category</button></a>
             </div>
-            <div class="col-md-6 text-right">
-                <a href="{{ route('category.trash') }}"><button class="btn btn-danger">View Trash</button></a>
-            </div>
+
         </div>
 
         <!-- Page-Title -->

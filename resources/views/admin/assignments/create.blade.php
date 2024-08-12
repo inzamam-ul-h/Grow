@@ -4,9 +4,23 @@
 
 
 
+<style>
+    .error {
+        color: red;
+        font-size: 0.875em;
+    }
+    .success {
+        color: green;
+        font-size: 0.875em;
+    }
+    .is-invalid {
+        border-color: red;
+    }
+    .is-valid {
+        border-color: green;
+    }
+</style>
 
-@include('frontend.layouts.header_links')
-@include('frontend.layouts.header')
 
 
 <div class="wrapper">
@@ -34,7 +48,7 @@
                             <li class="breadcrumb-item"><a href="{{ route('topic.show',['id'=>$topic->id,'chid'=>$topic->chapter_id]) }}">Topics</a></li>
                         </ol>
                     </div>
-                    <h4 class="page-title">Add Lecture</h4>
+                    <h4 class="page-title">Add assignment</h4>
                 </div>
             </div>
         </div>
@@ -58,7 +72,7 @@
                         <div class="card-header" style="background-color:  #152d7c; color: #fff; border-radius: 10px 10px 0 0; padding: 15px;">
                             <div class="row">
                                 <div class="col">
-                                    <h4>Create Lecture</h4>
+                                    <h4>Create Assignment</h4>
                                 </div>
                                 <div class="col-auto">
                                     <a href="{{ route('topic.show', ['id' => $topic->id, 'chid' => $topic->chapter_id]) }}" class="btn btn-secondary">Back</a>
@@ -66,45 +80,39 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form id="lecture_form" action="{{ route('lecture.store',['id'=>$topic->id]) }}" method="POST" enctype="multipart/form-data">
+                            <form id="assingment_form" action="{{ route('assignment.store',['topic_id'=>$topic->id]) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="lecture_name" style="font-weight: bold; color: #333;" >Lecture Name</label>
-                                    <input type="text" class="form-control" id="lecture_name" name="lecture_name" value="{{ old('lecture_name') }}" >
-                                    <span class="error" id="lecture_nameError"></span>
-                                    @error('lecture_name')
+                                    <label for="assignment_title" style="font-weight: bold; color: #333;" >Assignment Title</label>
+                                    <input type="text" class="form-control" id="assignment_title" name="assignment_title" value="{{ old('title') }}" >
+                                    <span class="error" id="assignment_titleError"></span>
+                                    @error('assignment_title')
                                    <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="lecture_description" style="font-weight: bold; color: #333;">Lecture Description</label>
-                                    <textarea class="form-control" id="lecture_description" name="lecture_description" rows="3">{{ old('lecture_description')}}</textarea>
-                                    <span class="error" id="lecture_descriptionError"></span>
-                                    @error('lecture_description')
+                                    <label for="assignment_description" style="font-weight: bold; color: #333;">Assignment Description</label>
+                                    <textarea class="form-control" id="assignment_description" name="assignment_description" rows="3">{{ old('assignment_description')}}</textarea>
+                                    <span class="error" id="assignment_descriptionError"></span>
+                                    @error('assignment_description')
                                    <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="lecture_file" style="font-weight: bold; color: #333;">Lecture File</label>
-                                        <input type="file" class="form-control-file" id="lecture_file" name="lecture_file" value="{{ old('lecture_file')}}">
-                                        <span class="error" id="lecture_fileError"></span>
-                                        @error('lecture_file')
+                                        <label for="assignment_file" style="font-weight: bold; color: #333;">Assignment File</label>
+                                        <input type="file" class="form-control-file" id="assignment_file" name="assignment_file" value="{{ old('assignment_file')}}">
+                                        <small class="form-text text-muted">Accepted file types: PDF, DOC, DOCX, PPT, PPTX, ZIP, RAR</small>
+                                        <span class="error" id="assignment_fileError"></span>
+                                        @error('assignment_file')
                                        <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="lecture_video" style="font-weight: bold; color: #333;">Lecture Video</label>
-                                        <input type="file" class="form-control-file" id="lecture_video" name="lecture_video">
-                                        <span class="error" id="lecture_videoError"></span>
-                                        @error('lecture_video')
-                                       <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+
                                 </div>
 
                                 <div class="form-group text-right">
-                                    <button type="submit" class="btn btn-primary" style="background-color: #152d7c; border-color: #3b28a7;">Create Lecture</button>
+                                    <button type="submit" class="btn btn-primary" style="background-color: #152d7c; border-color: #3b28a7;">Create assignment</button>
                                 </div>
                             </form>
                         </div>
@@ -124,7 +132,5 @@
 
 
 @include('frontend.layouts.footer_links')
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.19.5/jquery.validate.min.js"></script>
-<script src="{{ asset('frontend/assets/js/my js/lecture.js') }}"></script>
+<script src="{{ asset('frontend/assets/js/my js/asssingment.js') }}"></script>
 @include('frontend.layouts.footer')
-

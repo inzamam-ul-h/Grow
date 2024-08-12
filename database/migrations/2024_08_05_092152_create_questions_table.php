@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('answers', function (Blueprint $table) {
+        Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('question_id');
-            $table->text('content'); // Add a field for the content of the answer
-            $table->string('active')->default('0');
+
+            $table->string('title');
+            $table->text('content')->nullable();
+            $table->string('status')->default('1');
             $table->unsignedBigInteger('updated_by')->nullable();
+          //  $table->unsignedBigInteger('quiz_id');
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
+           // $table->foreign('quiz_id')->references('id')->on('quizs')->onDelete('cascade');
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('answers');
+        Schema::dropIfExists('questions');
     }
 };

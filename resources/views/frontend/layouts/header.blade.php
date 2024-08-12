@@ -3,11 +3,11 @@
 
 
    <!-- Loader -->
-        <div id="preloader">
+        {{-- <div id="preloader">
             <div id="status">
                 <div class="spinner"></div>
             </div>
-        </div>
+        </div> --}}
  <!-- Navigation Bar-->
  <header id="topnav">
     @if(Auth::check())
@@ -152,6 +152,7 @@
                 </div>
 
                 <ul class="list-inline float-right mb-0">
+
                     <!-- Search -->
                     <li class="list-inline-item dropdown notification-list">
                         <a class="nav-link waves-effect toggle-search" href="#"  data-target="#search-wrap">
@@ -276,6 +277,33 @@
                     </div>
 
                     <ul class="list-inline float-right mb-0">
+                        <li class="list-inline-item dropdown notification-list">
+                            <a class="nav-link dropdown-toggle arrow-none waves-effect" data-toggle="dropdown" href="#" role="button"
+                               aria-haspopup="false" aria-expanded="false">
+                                <i class="mdi mdi-email-outline noti-icon"></i>
+                                <span class="badge badge-danger noti-icon-badge">3</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-menu-lg">
+                                <!-- item-->
+                                <div class="dropdown-item noti-title">
+                                    <h5><span class="badge badge-danger float-right">745</span>Messages</h5>
+                                </div>
+
+                                <!-- item-->
+                                <a href="{{ url('chat/user') }}" class="dropdown-item notify-item">
+                                    <div class="notify-icon"><img src="{{ asset('frontend/assets/images/users/avatar-2.jpg') }}" alt="user-img" class="img-fluid rounded-circle" /> </div>
+                                    <p class="notify-details"><b>Charles M. Jones</b><small class="text-muted">Dummy text of the printing and typesetting industry.</small></p>
+                                </a>
+
+
+
+                                <!-- All-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    View All
+                                </a>
+
+                            </div>
+                        </li>
                         <!-- Search -->
                         <li class="list-inline-item dropdown notification-list">
                             <a class="nav-link waves-effect toggle-search" href="#"  data-target="#search-wrap">

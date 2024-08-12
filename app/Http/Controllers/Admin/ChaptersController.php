@@ -46,9 +46,10 @@ class ChaptersController extends Controller
      */
     public function create($id)
     {
-       $chapter = Chapter::findOrFail($id);
 
-       $course = $chapter->course;
+       $course = Course::findOrFail($id);
+
+       $chapter = $course->chapter;
 
         return view('admin.chapters.create',compact('course','chapter'));
     }

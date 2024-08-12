@@ -18,7 +18,6 @@ class DashboardController extends UserController
 
      public function getCourses(){
         $courses=Course::all();
-
         return $courses;
     }
 
@@ -54,6 +53,9 @@ class DashboardController extends UserController
         return view('home',compact('totalOrganizations','totalEmployee','employees','courses','totalCourses'));
 
         }
+
+
+
 
 
 

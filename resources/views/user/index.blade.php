@@ -29,14 +29,14 @@
                     </div>
                     <h4 class="page-title">Employee List</h4>
                     @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                    @elseif  (session('error'))
-                    <div class="alert alert-danger">
-                     {{ session('error') }}
-                 </div>
-                @endif
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @elseif (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -76,17 +76,17 @@
                                         </th>
                                         <th style="text-align: center; white-space: nowrap;"><strong>Post</strong>
                                         </th>
-                                        <th style="text-align: center; white-space: nowrap;">
+                                        {{-- <th style="text-align: center; white-space: nowrap;">
                                             <strong>Experience</strong>
-                                        </th>
+                                        </th> --}}
 
                                         <th style="text-align: center; white-space: nowrap;">
                                             <strong>Qualification</strong>
                                         </th>
                                         <th style="text-align: center; white-space: nowrap;"><strong>Organization
                                             </strong></th>
-                                            <th style="text-align: center; white-space: nowrap;"><strong>Courses</strong>
-                                            </th>
+                                        <th style="text-align: center; white-space: nowrap;"><strong>Courses</strong>
+                                        </th>
                                         <th style="text-align: center; white-space: nowrap;"><strong>Status</strong>
                                         </th>
                                         <th style="text-align: center; white-space: nowrap;"><strong>Action</strong>
@@ -94,59 +94,60 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($employees as $index=>$employee)
+                                    @foreach ($employees as $index => $employee)
                                         <tr>
-                                            <td  class="text-center">{{ $index+1 }}</td>
-                                            <td  class="text-center" ><a style="color: black" href="{{ route('user.show',[$employee->employee_id]) }}">{{ $employee->employee_name }}</td></a>
-                                            <td  class="text-center">{{ $employee->employee_email }}</td>
-                                            <td  class="text-center">
+                                            <td class="text-center">{{ $index + 1 }}</td>
+                                            <td class="text-center"><a style="color: black"
+                                                    href="{{ route('user.show', [$employee->employee_id]) }}">{{ $employee->employee_name }}
+                                            </td></a>
+                                            <td class="text-center">{{ $employee->employee_email }}</td>
+                                            <td class="text-center">
                                                 <span class="truncated-address"
                                                     style="cursor: pointer; text-decoration: underline;"
                                                     onclick="showFullAddress('{{ $employee->address }}')">
                                                     {{ Str::limit($employee->address, 5) }}
                                                 </span>
                                             </td>
-                                            <td  class="text-center">{{ $employee->post ?? 'N/A' }}</td>
-                                            <td  class="text-center" >{{ $employee->experence ?? 'N/A' }}</td>
+                                            <td class="text-center">{{ $employee->post ?? 'N/A' }}</td>
+                                            {{-- <td class="text-center">{{ $employee->experence ?? 'N/A' }}</td> --}}
 
-                                            <td  class="text-center">{{ $employee->qualification ?? 'N/A' }}</td>
-                                            <td  class="text-center">{{ $employee->organization_name ?? 'N/A' }}</td>
+                                            <td class="text-center">{{ $employee->qualification ?? 'N/A' }}</td>
+                                            <td class="text-center">{{ $employee->organization_name ?? 'N/A' }}</td>
 
                                             <td class="text-center">
-                                                <a href="{{ route('empCourse.index',['id'=>$employee->employee_id]) }}">  <button class="btn btn-sm btn-secondary">
-                                                     View <i class="fas fa-eye"></i>
-                                                  </button></a>
-                                              </td>
+                                                <a
+                                                    href="{{ route('empCourse.index', ['id' => $employee->employee_id]) }}">
+                                                    <button class="btn btn-sm btn-secondary">
+                                                        View <i class="fas fa-eye"></i>
+                                                    </button></a>
+                                            </td>
 
-                                                <td  class="text-center">
-                                                    <button class="btn toggle-status {{ $employee->employee_status == '0' ? 'btn-danger' : 'btn-success' }} btn-sm btn-custom mr-2 mb-2" data-id="{{ $employee->employee_id }}">
-                                                        <i class="fas {{ $employee->employee_status == '0' ? 'fa-times-circle' : 'fa-check-circle' }}"></i>
-                                                    </button>
-                                                </td>
+                                            <td class="text-center">
+                                                <button
+                                                    class="btn toggle-status {{ $employee->employee_status == '0' ? 'btn-danger' : 'btn-success' }} btn-sm btn-custom mr-2 mb-2"
+                                                    data-id="{{ $employee->employee_id }}">
+                                                    <i
+                                                        class="fas {{ $employee->employee_status == '0' ? 'fa-times-circle' : 'fa-check-circle' }}"></i>
+                                                </button>
+                                            </td>
 
 
                                             <td class="text-center">
                                                 <a href="{{ route('user.edit', [$employee->employee_id]) }}"
-
                                                     class="btn btn-primary"><i class="fa fa-pencil"></i></a>
                                                 </a>
                                                 {{-- <a href="{{ route('user.destroy', [$employee->employee_id]) }}"
-                                                    class="btn btn-danger"
-                                                   >
-                                                    <i class="fa fa-trash"></i>
-                                                </a> --}}
+                                                class="btn btn-danger">
+                                                <i class="fa fa-trash"></i>
+                                            </a> --}}
 
                                                 <a href="{{ route('user.destroy', $employee->employee_id) }}"
                                                     onclick="return confirm('Are you sure you want to move to trash this employee?');"
-                                                    class="btn btn-danger"
-                                                    >
-                                                     <i class="fa fa-trash"></i>
+                                                    class="btn btn-danger">
+                                                    <i class="fa fa-trash"></i>
 
-                                                 </a>
+                                                </a>
                                             </td>
-
-
-
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -193,39 +194,33 @@
 
 
 
-<script>
-    $(document).ready(function(){
-        // Function to toggle user status
-        function toggleStatus(userId, button) {
-            $.ajax({
-                url: '/user/toggle-status/' + userId,
-                method: 'GET',
-                success: function(data) {
-                    if (data.status == '0') {
-                        button.html('<i class="fas fa-toggle-off"></i> Inactive');
-                        button.removeClass('btn-success').addClass('btn-danger');
-                    } else {
-                        button.html('<i class="fas fa-toggle-on"></i> Active');
-                        button.removeClass('btn-danger').addClass('btn-success');
-                    }
-                },
-                error: function(error) {
-                    console.log('Error:', error);
+        <script>
+            $(document).ready(function() {
+                // Function to toggle user status
+                function toggleStatus(userId, button) {
+                    $.ajax({
+                        url: '/user/toggle-status/' + userId,
+                        method: 'GET',
+                        success: function(data) {
+                            if (data.status == '0') {
+                                button.html('<i class="fas fa-toggle-off"></i>');
+                                button.removeClass('btn-success').addClass('btn-danger');
+                            } else {
+                                button.html('<i class="fas fa-toggle-on"></i> ');
+                                button.removeClass('btn-danger').addClass('btn-success');
+                            }
+                        },
+                        error: function(error) {
+                            console.log('Error:', error);
+                        }
+                    });
                 }
+
+                // Handle click event on status button
+                $('.toggle-status').on('click', function() {
+                    var userId = $(this).data('id');
+                    var button = $(this);
+                    toggleStatus(userId, button);
+                });
             });
-        }
-
-        // Handle click event on status button
-        $('.toggle-status').on('click', function(){
-            var userId = $(this).data('id');
-            var button = $(this);
-            toggleStatus(userId, button);
-        });
-    });
-</script>
-
-
-
-
-
-
+        </script>

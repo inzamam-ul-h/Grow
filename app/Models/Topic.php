@@ -27,4 +27,14 @@ class Topic extends Model
     {
         return $this->hasMany(Lecture::class);
     }
+
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
+    }
+
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class);
+    }
 }
