@@ -18,6 +18,7 @@ use App\Http\Controllers\Organization\OrganizationProfileController;
 use App\Http\Controllers\OrganizationCrudController as ControllersOrganizationCrudController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -246,3 +247,20 @@ route::get('viewSubmission/{assignment_id}',[AssignmentController::class,'getSub
 
 // progress check view or not
 Route::post('/update-lecture-progress', [ProgressController::class, 'updateProgress'])->name('update.lecture.progress');
+
+
+
+
+
+Route::middleware(['auth', 'admin_or_organization',])->prefix('quiz')->group(function () {
+    Route::get('/create/topic/{topic_id}', [QuizController::class, 'create'])->name('quiz.create')->middleware('admin');
+    Route::post('/store/topic/{topic_id}', [QuizController::class, 'storeQuizData'])->name('quiz.store')->middleware('admin');
+
+    // Route::get('/{quiz_id}/topic/{topic_id}', [QuizController::class, 'show'])->name('quiz.show');
+    // Route::get('/edit/{quiz_id}/topic/{topic_id}', [QuizController::class, 'edit'])->name('quiz.edit')->middleware('admin');
+    // Route::put('/update/{quiz_id}/topic/{topic_id}', [QuizController::class, 'update'])->name('quiz.update')->middleware('admin');
+    // //status
+    // Route::get('/toggle-status/{id}', [QuizController::class, 'toggleStatus'])->name('assignment.toggleStatus')->middleware('admin');
+
+
+});

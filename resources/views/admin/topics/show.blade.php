@@ -87,7 +87,7 @@
                             <i class="fas fa-plus-circle"></i> Add Lecture
                         </a>
 
-                        <a href="#" class="btn btn-warning btn-sm ml-3" style="background-color: #ffa000; border-color: #ff6f00; color: #fff;">
+                        <a href="{{ route('quiz.create',['topic_id'=>$topic->id]) }}" class="btn btn-warning btn-sm ml-3" style="background-color: #ffa000; border-color: #ff6f00; color: #fff;">
                             <i class="fas fa-plus-circle"></i> Add Quiz
                         </a>
 

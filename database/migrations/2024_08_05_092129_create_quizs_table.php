@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('quizs', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('quiz_title');
             $table->string('status')->default('1');
             $table->unsignedBigInteger('topic_id');
             $table->unsignedBigInteger('updated_by')->nullable();

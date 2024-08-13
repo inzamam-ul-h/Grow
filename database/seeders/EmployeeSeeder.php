@@ -21,7 +21,7 @@ class EmployeeSeeder extends Seeder
             'password' => Hash::make('employee123'),
             'usertype' => 'employee',
             'status'=>1,
-            'reference_id' => 4,
+            'reference_id' => 2,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

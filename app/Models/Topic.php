@@ -28,7 +28,7 @@ class Topic extends Model
         return $this->hasMany(Lecture::class);
     }
 
-    public function quizzes()
+    public function quizs()
     {
         return $this->hasMany(Quiz::class);
     }

@@ -51,7 +51,10 @@ class User extends Authenticatable
     ];
 
 
-
+    public function updatedQuizzes()
+    {
+        return $this->hasMany(Quiz::class, 'updated_by');
+    }
 
     public function organizationProfile()
     {
@@ -88,4 +91,15 @@ class User extends Authenticatable
       {
           return $this->hasMany(AssignmentSubmission::class, 'user_id');
       }
+
+      public function updatedQuestions()
+      {
+          return $this->hasMany(Question::class, 'updated_by');
+      }
+
+
+      public function atemptQuizzes()
+    {
+        return $this->hasMany(AtemptQuiz::class);
+    }
 }

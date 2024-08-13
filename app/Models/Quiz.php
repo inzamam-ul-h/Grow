@@ -10,27 +10,30 @@ class Quiz extends Model
 {
     use HasFactory, SoftDeletes;
 
-    // Fillable properties
-    protected $fillable = [
-        'title',
-        'status',
-        'topic_id',
-        'updated_by'
-    ];
 
-    // Define the relationship with the topic model
+    protected $table = 'quizs';
+    // Specify the fields that are mass assignable
+    protected $fillable = ['quiz_title', 'status', 'topic_id', 'updated_by'];
+
+    /**
+     * Get the topic associated with the quiz.
+     */
     public function topic()
     {
-        return $this->belongsTo(topic::class);
+        return $this->belongsTo(Topic::class);
     }
 
-
-    // Define the relationship with the User model (optional, if you want to track the user who updated the quiz)
+    /**
+     * Get the user who last updated the quiz.
+     */
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    /**
+     * Get the questions for the quiz.
+     */
     public function questions()
     {
         return $this->hasMany(Question::class);

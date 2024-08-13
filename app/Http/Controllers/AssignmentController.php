@@ -12,9 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class AssignmentController extends Controller
 {
-    public function index()
-    {
-    }
+
 
 
     public function create($id)
